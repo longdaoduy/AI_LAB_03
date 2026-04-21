@@ -77,7 +77,25 @@ results = []
 res_baseline = evaluate_regression_model(baseline_tree, X_test, y_test, "Baseline Tree")
 results.append(res_baseline)
 
+print("\n============ VISUALIZING BASELINE MODEL ============")
+# 1. Tạo một khung hình đủ lớn
+plt.figure(figsize=(20, 10))
 
+# 2. Vẽ cây quyết định
+plot_tree(baseline_tree, 
+          feature_names=X.columns.tolist(),  # Hiển thị tên cột thay vì X[0], X[1]
+          filled=True,                       # Tô màu cho các node
+          rounded=True,                      # Bo góc
+          max_depth=3,                       # Giới hạn hiển thị 3 tầng
+          fontsize=10)
+
+plt.title("Decision Tree Regressor (Baseline) - Top 3 Levels", fontsize=16)
+plt.tight_layout()
+
+# 3. Lưu ảnh ra file
+plt.savefig('baseline_tree.png', dpi=300)
+print("- Saved decision tree visualization to 'baseline_tree.png'")
+#plt.show()
 
 
 
