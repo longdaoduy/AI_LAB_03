@@ -72,10 +72,25 @@ print("\n============ TRAINING BASELINE MODEL ============")
 baseline_tree = DecisionTreeRegressor(random_state=42)
 baseline_tree.fit(X_train, y_train)
 
+#Improved model with adjusted min_samples_leaf
+print("\n============ TRAINING IMPROVED MODEL ============")
+
+improved_model_v1 = DecisionTreeRegressor(random_state = 42, min_samples_leaf = 5, min_samples_split = 10) #Version 1: min_samples_leaf = 5, min_samples_split = 10
+improved_model_v1.fit(X_train, y_train)
+res_baseline_adjusted_min_v1 = evaluate_regression_model(improved_model_v1, X_test, y_test, "Improved Tree (min_samples_leaf = 5, min-samples_split = 10)")
+
+improved_model_v2 = DecisionTreeRegressor(random_state = 42, min_samples_leaf = 10, min_samples_split = 20) #Version 2: min_samples_leaf = 10, min_samples_split = 20
+improved_model_v2.fit(X_train, y_train)
+res_baseline_adjusted_min_v2 = evaluate_regression_model(improved_model_v2, X_test, y_test, "Improved Tree (min_samples_leaf = 10, min-samples_split = 20)")
+
 #Compute baseline model performance
 results = []
 res_baseline = evaluate_regression_model(baseline_tree, X_test, y_test, "Baseline Tree")
 results.append(res_baseline)
+
+#Results of improved model(Adjusting min samples leaf and min samples split)
+results.append(res_baseline_adjusted_min_v1)
+results.append(res_baseline_adjusted_min_v2)
 
 print("\n============ VISUALIZING BASELINE MODEL ============")
 # 1. Tạo một khung hình đủ lớn
