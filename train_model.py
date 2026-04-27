@@ -6,6 +6,7 @@ from sklearn.tree import DecisionTreeRegressor, plot_tree
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
+
 pd.set_option('display.float_format', lambda x: '%.2f' % x)
 # Function to evaluate regression model performance
 def evaluate_regression_model(model, X_test, y_test, model_name="Model"):
@@ -118,8 +119,11 @@ print("- Saved decision tree visualization to 'baseline_tree.png'")
 # Display results
 print("\n============ PERFORMANCE COMPARISON TABLE ============")
 df_results = pd.DataFrame(results)
-df_results.set_index('Model', inplace=True)
+df_results.set_index("Model", inplace=True)
 print(df_results)
+
+
+
 
 
 
