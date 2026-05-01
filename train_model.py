@@ -93,6 +93,32 @@ results.append(res_baseline)
 results.append(res_baseline_adjusted_min_v1)
 results.append(res_baseline_adjusted_min_v2)
 
+# Improved model with Cost Complexity Pruning (post-pruning using ccp_alpha)
+print("\n============ TRAINING IMPROVED MODEL (PRUNING) ============")
+
+# Compute the pruning path to find effective alphas
+pruning_path = baseline_tree.cost_complexity_pruning_path(X_train, y_train)
+ccp_alphas = pruning_path.ccp_alphas[:-1]  # Exclude the last alpha (trivial tree)
+
+# Evaluate pruned trees across all alphas to find the best one
+best_alpha = None
+best_r2 = -np.inf
+for alpha in ccp_alphas:
+    pruned_tree = DecisionTreeRegressor(random_state=42, ccp_alpha=alpha)
+    pruned_tree.fit(X_train, y_train)
+    r2 = r2_score(y_test, pruned_tree.predict(X_test))
+    if r2 > best_r2:
+        best_r2 = r2
+        best_alpha = alpha
+
+print(f"- Best ccp_alpha found: {best_alpha:.6f} (R2 on test set: {best_r2:.4f})")
+
+# Train final pruned model with optimal alpha
+pruned_model = DecisionTreeRegressor(random_state=42, ccp_alpha=best_alpha)
+pruned_model.fit(X_train, y_train)
+res_pruned = evaluate_regression_model(pruned_model, X_test, y_test, f"Pruned Tree (ccp_alpha={best_alpha:.6f})")
+results.append(res_pruned)
+
 print("\n============ VISUALIZING BASELINE MODEL ============")
 # 1. Tạo một khung hình đủ lớn
 plt.figure(figsize=(20, 10))
