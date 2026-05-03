@@ -93,6 +93,20 @@ results.append(res_baseline)
 results.append(res_baseline_adjusted_min_v1)
 results.append(res_baseline_adjusted_min_v2)
 
+#Results of models with different depths
+print("\n============ TRAINING MODELS WITH DIFFERENT DEPTHS ============")
+depths = [1, 2, 3, 5, 10, 15, 20]
+
+#Changing tree depth
+for d in depths:
+    model = DecisionTreeRegressor(max_depth=d, random_state=42)
+    model.fit(X_train, y_train)
+    
+    # Hàm này vừa in kết quả ra màn hình (theo logic cũ của bạn) 
+    # vừa trả về kết quả để append vào list
+    res = evaluate_regression_model(model, X_test, y_test, f"Tree with max_depth={d}")
+    results.append(res)
+
 print("\n============ VISUALIZING BASELINE MODEL ============")
 # 1. Tạo một khung hình đủ lớn
 plt.figure(figsize=(20, 10))
